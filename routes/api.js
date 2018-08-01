@@ -8,11 +8,11 @@
 
 'use strict';
 
-var expect = require('chai').expect;
-var MongoClient = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
+const expect      = require('chai').expect;
+const MongoClient = require('mongodb');
+const ObjectId    = require('mongodb').ObjectID;
 
-const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+const CONNECTION_STRING = process.env.DB;
 
 MongoClient.connect(CONNECTION_STRING, (err, db) => {
   if (err) {
