@@ -15,18 +15,13 @@ const ObjectId    = require('mongodb').ObjectID;
 const CONNECTION_STRING = process.env.DB;
 
 MongoClient.connect(CONNECTION_STRING, (err, db) => {
-  if (err) {
-    console.log("Database error: " + err);
-  } else {
-    console.log("Successful database connection");
-  }
+  if (err) console.log("Database error: " + err);
+  else console.log("Successful database connection");
 });
 
-module.exports = function (app) {
-
+module.exports = app => {
   app.route('/api/issues/:project')
-  
-    .get(function (req, res){
+    .get((req, res) => {
       // for an array of all issues on that specific project with all the information for each issue as was returned when posted.
       // I can filter my get request by also passing along any field and value in the query(ie. /api/issues/{project}?open=false).
       // I can pass along as many fields/values as I want.
@@ -48,7 +43,7 @@ module.exports = function (app) {
       })
     })
     
-    .post(function (req, res){
+    .post((req, res) => {
       const project = req.params.project;
       // with form data containing required issue_title, issue_text, created_by, and optional assigned_to and status_text.
       // The object saved (and returned) will include all of those fields (blank for optional no input) 
@@ -64,22 +59,23 @@ module.exports = function (app) {
         if (req.body.assigned_to) assigned_to = req.body.assigned_to;
         if (req.body.status_text) status_text = req.body.status_text;
         
-        if(!req.body.issue_title || !req.body.issue_text || !req.body.created_by) res.send("missing inputs");
+        if (!req.body.issue_title || !req.body.issue_text || !req.body.created_by) res.send("missing inputs");
         else {
-          collection.insert({project: project,
-                             issue_title: req.body.issue_title,
-                             issue_text: req.body.issue_text,
-                             created_by: req.body.created_by,
-                             assigned_to: assigned_to,
-                             status_text: status_text,
-                             created_on: created_on,
-                             updated_on: created_on,
-                             open: true}, (err, result) => {
+          collection.insert({
+            project: project,
+            issue_title: req.body.issue_title,
+            issue_text: req.body.issue_text,
+            created_by: req.body.created_by,
+            assigned_to: assigned_to,
+            status_text: status_text,
+            created_on: created_on,
+            updated_on: created_on,
+            open: true
+          }, (err, result) => {
             res.json(result.ops[0]);
           })
         }           
       })
-    
     })
     
     .put(function (req, res){
@@ -111,10 +107,9 @@ module.exports = function (app) {
           })
         })
       }
-    
     })
     
-    .delete(function (req, res){
+    .delete((req, res) => {
       // with a _id to completely delete an issue.
       // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
     
@@ -125,13 +120,14 @@ module.exports = function (app) {
         
         if (!req.body._id) res.send("_id error");
         else {
-          collection.remove({project: project, _id: ObjectId(req.body._id)}, (err, result) => {
+          collection.remove({
+            project: project,
+            _id: ObjectId(req.body._id)
+          }, (err, result) => {
             if (err) res.send("could not delete " + req.body._id);
             else res.send("deleted " + req.body._id);
           })
         }
       })
-    
     });
-    
 };
