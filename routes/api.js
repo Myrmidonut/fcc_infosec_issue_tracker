@@ -1,11 +1,3 @@
-/*
-*
-*
-*       Complete the API routing below
-*
-*
-*/
-
 'use strict';
 
 const expect      = require('chai').expect;
@@ -28,7 +20,6 @@ module.exports = app => {
       
       const project = req.params.project;
       const query = req.query;
-    
       query.project = project;
     
       if (query._id) query._id = new ObjectId(query._id);
@@ -37,9 +28,7 @@ module.exports = app => {
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         
-        collection.find(query).toArray((err, result) => {
-          res.json(result);
-        })
+        collection.find(query).toArray((err, result) => res.json(result))
       })
     })
     
@@ -71,21 +60,22 @@ module.exports = app => {
             created_on: created_on,
             updated_on: created_on,
             open: true
-          }, (err, result) => {
-            res.json(result.ops[0]);
-          })
+          }, (err, result) => res.json(result.ops[0]))
         }           
       })
     })
     
-    .put(function (req, res){
+    .put((req, res) => {
       // with a _id and any fields in the object with a value to object said object. 
       // Returned will be 'successfully updated' or 'could not update '+_id.
       // This should always update updated_on. If no fields are sent return 'no updated field sent'.
     
-      const project = req.params.project;
+      let project = req.params.project;
       let changes = {};
       let noFields = true;
+  
+      if (req.body.open === "true") req.body.open = true;
+      else if (req.body.open === "false") req.body.open = false;
     
       for (let i in req.body) {
         if (req.body[i] !== "" && i !== "_id") {
