@@ -12,6 +12,17 @@ MongoClient.connect(CONNECTION_STRING, (err, db) => {
 });
 
 module.exports = app => {
+  app.route("/api/issues")
+    .get((req, res) => {
+      MongoClient.connect(CONNECTION_STRING, (err, db) => {
+        const collection = db.collection("issues");
+        
+        collection.distinct("project", (error, result) => {
+          res.json(result);
+        })
+      })
+  })
+  
   app.route('/api/issues/:project')
     .get((req, res) => {
       const project = req.params.project;
@@ -24,13 +35,15 @@ module.exports = app => {
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         
-        collection.find(query).toArray((err, result) => res.json(result))
+        collection.find(query).toArray((err, result) => {
+          res.json(result);
+        })
       })
     })
     
     .post((req, res) => {
       const project = req.params.project;
-      
+    
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         
@@ -53,7 +66,9 @@ module.exports = app => {
             created_on: created_on,
             updated_on: created_on,
             open: true
-          }, (err, result) => res.json(result.ops[0]))
+          }, (err, result) => {
+            res.json(result.ops[0]);
+          })
         }           
       })
     })
@@ -81,8 +96,11 @@ module.exports = app => {
           const collection = db.collection("issues");
 
           collection.updateOne({_id: ObjectId(req.body._id)}, {$set: changes}, (err, result) => {
-            if (err) res.send("could not update " + req.body._id);
-            else res.send("successfully updated");
+            if (err) {
+              res.send("could not update " + req.body._id);
+            } else {
+              res.send("successfully updated");
+            }
           })
         })
       }
@@ -94,14 +112,15 @@ module.exports = app => {
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         
-        if (!req.body._id) res.send("_id error");
-        else {
-          collection.remove({
-            project: project,
-            _id: ObjectId(req.body._id)
-          }, (err, result) => {
-            if (err) res.send("could not delete " + req.body._id);
-            else res.send("deleted " + req.body._id);
+        if (!req.body._id) {
+          res.send("_id error");
+        } else {
+          collection.remove({project: project, _id: ObjectId(req.body._id)}, (err, result) => {
+            if (err) {
+              res.send("could not delete " + req.body._id);
+            } else {
+              res.send("deleted " + req.body._id);
+            }
           })
         }
       })

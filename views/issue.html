@@ -4,23 +4,23 @@
     <title>Issue Tracker</title>
     
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/public/style.css">
+    <link href="../style.css" rel="stylesheet">
   </head>
   
   <body>
-    <div class="container">
-      
-      <header>
-        <h1 id="projectTitle"></h1>
-      </header>
-
-      <h3>Submit a new issue:</h3>
+    
+    <header class="container">
+      <h1 id="projectTitle"></h1>
+    </header>
+    
+    <main class="container">
       <form id="newIssue" method="post" action="/api/">
+        <h3>Submit a new issue:</h3>
+        <p><code>POST /api/issues/apitest</code></p>
         <input type="text" name="issue_title" placeholder="Title *" required=""><br>
         <textarea type="text" name="issue_text" placeholder="Text *" required=""></textarea><br>
         <input type="text" name="created_by" placeholder="Created by *" required=""><br>
@@ -35,87 +35,20 @@
       <hr>
       
       <h2>Issues:</h2>
-
+      <p><code>GET /api/issues/apitest</code></p>
       <div id="issueDisplay"></div>
+    </main>
 
-      <div class="footer">
-        <p>
-          by <a href="https://github.com/Myrmidonut/fcc_infosec_issue_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
-        </p>
-      </div>
-
-    </div>
+    <footer class="container">
+      <p>
+        by <a href="https://github.com/Myrmidonut/fcc_infosec_issue_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
+      </p>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
-    <script>
-      $(function() {
-        var currentProject = window.location.pathname.replace(/\//g, "");;
-        var url = "/api/issues/"+currentProject;
-        $('#projectTitle').text('All issues for: '+currentProject)
-        $.ajax({
-          type: "GET",
-          url: url,
-          success: function(data)
-          {
-            var issues= [];
-            data.forEach(function(ele) {
-              var openstatus;
-              (ele.open) ? openstatus = 'open' : openstatus = 'closed';
-              var single = [
-                '<div class="issue '+openstatus+'">',
-                '<h3>'+ele.issue_title+' -  ('+openstatus+')</h3>',
-                '<br>',
-                '<p><b>Text: </b>'+ele.issue_text+'</p>',
-                '<p><b>Status: </b>'+ele.status_text+'</p>',
-                '<br>',
-                '<p class="id"><b>id: </b>'+ele._id+'</p>',
-                '<p class="id"><b>Created by:</b> '+ele.created_by+'<br><b>Assigned to:</b> '+ele.assigned_to,
-                '<p class="id"><b>Created on:</b> '+ele.created_on+'<br><b>Last updated:</b> '+ele.updated_on,
-                '<br><a href="#" class="closeIssue" id="'+ele._id+'">Close?</a><br><a href="#" class="deleteIssue" id="'+ele._id+'">Delete?</a>',
-                '</div>',
-                '<hr>'
-              ];
-              issues.push(single.join(''));
-            });
-            $('#issueDisplay').html(issues.join(''));
-          }
-        });
-
-        $('#newIssue').submit(function(e){
-          e.preventDefault();
-          $(this).attr('action', "/api/issues/" + currentProject);
-          $.ajax({
-            type: "POST",
-            url: url,
-            data: $(this).serialize(),
-            success: function(data) { window.location.reload(true); }
-          });
-        });
-
-        $('#issueDisplay').on('click','.closeIssue', function(e) {
-          var url = "/api/issues/"+currentProject;
-          $.ajax({
-            type: "PUT",
-            url: url,
-            data: {_id: $(this).attr('id'), open: false},
-            success: function(data) { alert(data); window.location.reload(true); }
-          });
-          e.preventDefault();
-        });
-        
-        $('#issueDisplay').on('click','.deleteIssue', function(e) {
-          var url = "/api/issues/"+currentProject;
-          $.ajax({
-            type: "DELETE",
-            url: url,
-            data: {_id: $(this).attr('id')},
-            success: function(data) { alert(data); window.location.reload(true); }
-          });
-          e.preventDefault();
-        });
-      });
-    </script>
+    
+    <script src="../script-issue.js"></script>
   </body>
 </html>
