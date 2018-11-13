@@ -4,143 +4,112 @@
     <title>Issue Tracker</title>
     
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/public/style.css">
+    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
   </head>
   
   <body>
-    <div class="container">
-      
-      <header>
-        <h1>Information Security Project: Issue Tracker</h1>
-      </header>
     
+    <header class="container">
+      <h1>Information Security Project: Issue Tracker</h1>
+    </header>
+    
+    <main class="container">
       <h2>User Stories:</h2>
       <ol class="user-stories">
         <li>Prevent <code>cross site scripting</code> (XSS attack).</li>
-        <li>I can <strong>POST</strong> <code>/api/issues/{projectname}</code> with form data containing required <code>issue_title</code>, <code>issue_text</code>, <code>created_by</code>, and optional <code>assigned_to</code> and <code>status_text</code>.</li>
+        <li>I can <strong>POST</strong> <code>/api/issues/{project}</code> with form data containing required <code>issue_title</code>, <code>issue_text</code>, <code>created_by</code>, and optional <code>assigned_to</code> and <code>status_text</code>.</li>
         <li>The object saved (and returned) will include all of those fields (<code>blank</code> for optional no input) and also include <code>created_on</code> (date/time), <code>updated_on</code> (date/time), <code>open</code> (boolean, true for open, false for closed), and <code>_id</code>.</li>
-        <li>I can <strong>PUT</strong> <code>/api/issues/{projectname}</code> with an <code>_id</code> and form data to update the object. Returned will be <code>'successfully updated'</code> or <code>'could not update '+_id</code>. This should always update <code>updated_on</code>. If no fields are sent return <code>'no updated field sent'</code>.</li>
-        <li>I can <strong>DELETE</strong> <code>/api/issues/{projectname}</code> with an <code>_id</code> to completely delete an issue. If no _id is sent return <code>'_id error'</code>, on success return <code>'deleted '+_id</code> and on fail return <code>'could not delete '+_id</code>.</li>
-        <li>I can <strong>GET</strong> <code>/api/issues/{projectname}</code> for an <code>array</code> of all issues on that specific project with all the information for each issue as was returned when posted.</li>
+        <li>I can <strong>PUT</strong> <code>/api/issues/{project}</code> with an <code>_id</code> and form data to update the object. Returned will be <code>'successfully updated'</code> or <code>'could not update '+_id</code>. This should always update <code>updated_on</code>. If no fields are sent return <code>'no updated field sent'</code>.</li>
+        <li>I can <strong>DELETE</strong> <code>/api/issues/{project}</code> with an <code>_id</code> to completely delete an issue. If no _id is sent return <code>'_id error'</code>, on success return <code>'deleted '+_id</code> and on fail return <code>'could not delete '+_id</code>.</li>
+        <li>I can <strong>GET</strong> <code>/api/issues/{project}</code> for an <code>array</code> of all issues on that specific project with all the information for each issue as was returned when posted.</li>
         <li>I can filter my <strong>GET</strong> request by also passing along any field and value in the <code>query</code> (i.e. <code>/api/issues/{project}?open=false</code>). I can pass along as many fields/values as I want.</li>
         <li>All 11 functional tests are complete and passing.</li>
       </ol>
-
+      
       <h3>Example usage:</h3>
-      <code>/api/issues/{project}</code><br>
-      <code>/api/issues/{project}?open=true&amp;assigned_to=Joe</code><br>
-
+      <code>GET /api/issues/{project}</code><br>
+      <code>PUT /api/issues/{project}?open=true&amp;assigned_to=Joe</code><br>
+      
       <h3>Example return:</h3>
-      <code>[{"_id":"5871dda29faedc3491ff93bb","issue_title":"Fix error in posting data","issue_text":"When we post data it has an error.","created_on":"2017-01-08T06:35:14.240Z","updated_on":"2017-01-08T06:35:14.240Z","created_by":"Joe","assigned_to":"Joe","open":true,"status_text":"In QA"},...]</code><br><br>
-
-      <h2><a href="/apitest/">Example <em>/apitest/</em> issues page</a></h2>
-
+      <code>[{"_id": "5871dda29faedc3491ff93bb", "issue_title":"Fix error in posting data", "issue_text":"When we post data it has an error.", "created_on":"2017-01-08T06:35:14.240Z", "updated_on":"2017-01-08T06:35:14.240Z", "created_by":"Joe", "assigned_to":"Joe", "open":true, "status_text":"In QA"}, ...]</code><br><br>
+      
       <hr>
-
-      <div id="testui">
-        <h2>API Tests:</h2>
-
+      
+      <h2>API:</h2>
+      <h3><a href="/api/issues">Show all projects</a></h3>
+      <p>
+        <form id="projectForm" class="border">
+          <h3>Open any project</h3>
+          <p><code>GET /api/issues/:project</code></p>
+          <input type="text" name="project" placeholder="Project" required=""><br><br>
+          <input type="submit" value="Open Project">
+        </form>
+      </p>
+      
+      <hr>
+      
+      <h2>API Test:</h2>
+      <h3><a href="/apitest">Show <em>/apitest/</em> issues page</a></h3>
+      
+      <form id="submitForm" class="border">
         <h3>Submit issue on <i>apitest</i>:</h3>
-        <form id="testForm1" class="border">
-          <input type="text" name="issue_title" placeholder="Title *" required=""><br>
-          <textarea type="text" name="issue_text" placeholder="Text *" required=""></textarea><br>
-          <input type="text" name="created_by" placeholder="Created by *" required=""><br>
-          <input type="text" name="assigned_to" placeholder="Assigned to"><br>
-          <input type="text" name="status_text" placeholder="Status text">
-          <p>* Required Fields</p>
-          <button type="submit">Submit Issue</button>
-        </form>
-
+        <p><code>POST /api/issues/apitest</code></p>
+        <input type="text" name="issue_title" placeholder="Title *" required=""><br>
+        <textarea type="text" name="issue_text" placeholder="Text *" required=""></textarea><br>
+        <input type="text" name="created_by" placeholder="Created by *" required=""><br>
+        <input type="text" name="assigned_to" placeholder="Assigned to"><br>
+        <input type="text" name="status_text" placeholder="Status text">
+        <p>* Required Fields</p>
+        <p class="status">Status: <span id="submitStatus"></span></p>
+        <input type="submit" value="Submit Issue">
+      </form>
+      
+      <form id="updateForm" class="border">
         <h3>Update issue on <i>apitest</i>:</h3>
-        <form id="testForm2" class="border">
-          <input type="text" name="_id" placeholder="_id *" required=""><br>
-          <input type="text" name="issue_title" placeholder="Title"><br>
-          <textarea type="text" name="issue_text" placeholder="Text"></textarea><br>
-          <input type="text" name="created_by" placeholder="Created by"><br>
-          <input type="text" name="assigned_to" placeholder="Assigned to"><br>
-          <input type="text" name="status_text" placeholder="Status text"><br>
-          <label>
-            <input type="checkbox" name="open" value="false">
-            Check to close issue
-          </label>
-          <p>* Required Fields</p>
-          <button type="submit">Submit Issue</button>
-        </form>
-
+        <p><code>PUT /api/issues/apitest</code></p>
+        <input type="text" name="_id" placeholder="_id *" required=""><br>
+        <input type="text" name="issue_title" placeholder="Title"><br>
+        <textarea type="text" name="issue_text" placeholder="Text"></textarea><br>
+        <input type="text" name="created_by" placeholder="Created by"><br>
+        <input type="text" name="assigned_to" placeholder="Assigned to"><br>
+        <input type="text" name="status_text" placeholder="Status text"><br>
+        <label>
+          <input type="checkbox" name="open" value="false">
+          Check to close issue
+        </label>
+        <p>* Required Field</p>
+        <p class="status">Status: <span id="updateStatus"></span></p>
+        <input type="submit" value="Update Issue">
+      </form>
+      
+      <form id="deleteForm" class="border">
         <h3>Delete issue on <i>apitest</i>:</h3>
-        <form id="testForm3" class="border">
-          <input type="text" name="_id" placeholder="_id" required=""><br><br>
-          <button type="submit">Delete Issue</button>
-        </form>
-        
-        
-        <h3>API response:</h3>
-        <p id="jsonResult"></p>
-        
-        <hr>
-        
-        <div class="footer">
-          <p>
-            by <a href="https://github.com/Myrmidonut/fcc_infosec_issue_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
-          </p>
-        </div>
+        <p><code>DELETE /api/issues/apitest</code></p>
+        <input type="text" name="_id" placeholder="_id" required=""><br><br>
+        <p class="status">Status: <span id="deleteStatus"></span></p>
+        <input type="submit" value="Delete Issue">
+      </form>
       
-      </div>
-      
-      
-
-      <!-- Your web-app is https, so your scripts need to be too -->
-      <script src="https://code.jquery.com/jquery-2.2.1.min.js"
-              integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
-              crossorigin="anonymous"></script>
-      <script>
-        $(function() {
-          
-          $('#testForm1').submit(function(e) {
-            $.ajax({
-              url: '/api/issues/apitest',
-              type: 'post',
-              data: $('#testForm1').serialize(),
-              success: function(data) {
-                $('#jsonResult').text(JSON.stringify(data));
-              }
-            });
-            e.preventDefault();
-          });
-          
-          $('#testForm2').submit(function(e) {
-            $.ajax({
-              url: '/api/issues/apitest',
-              type: 'put',
-              data: $('#testForm2').serialize(),
-              success: function(data) {
-                $('#jsonResult').text(JSON.stringify(data));
-              }
-            });
-            e.preventDefault();
-          });
-          
-          $('#testForm3').submit(function(e) {
-            $.ajax({
-              url: '/api/issues/apitest',
-              type: 'delete',
-              data: $('#testForm3').serialize(),
-              success: function(data) {
-                $('#jsonResult').text(JSON.stringify(data));
-              }
-            });
-            e.preventDefault();
-          });
-        });
-      </script>
-
-      <script src="./public/script.js"></script>
-      
-    </div>
+      <h3>API response:</h3>
+      <p id="jsonResult"></p>
+    </main>
+    
+    <footer class="container">
+      <hr>
+      <p>
+        by <a href="https://github.com/Myrmidonut/fcc_infosec_issue_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
+      </p>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    
+    <script src="script-index.js"></script>
+  
   </body>
 </html>
