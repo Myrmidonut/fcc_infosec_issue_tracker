@@ -43,7 +43,7 @@ module.exports = app => {
     
     .post((req, res) => {
       const project = req.params.project;
-    
+      
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         
@@ -77,7 +77,7 @@ module.exports = app => {
       let project = req.params.project;
       let changes = {};
       let noFields = true;
-  
+      
       if (req.body.open === "true") req.body.open = true;
       else if (req.body.open === "false") req.body.open = false;
     
@@ -87,14 +87,14 @@ module.exports = app => {
           changes[i] = req.body[i];
         }
       }
-    
+      
       if (noFields === true) res.send("no updated field sent");
       else {
         changes.updated_on = new Date();
-
+        
         MongoClient.connect(CONNECTION_STRING, (err, db) => {
           const collection = db.collection("issues");
-
+          
           collection.updateOne({_id: ObjectId(req.body._id)}, {$set: changes}, (err, result) => {
             if (err) {
               res.send("could not update " + req.body._id);
@@ -108,7 +108,7 @@ module.exports = app => {
     
     .delete((req, res) => {
       const project = req.params.project;
-    
+      
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         

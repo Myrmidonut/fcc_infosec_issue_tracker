@@ -71,7 +71,7 @@
       <form id="updateForm" class="border">
         <h3>Update issue on <i>apitest</i>:</h3>
         <p><code>PUT /api/issues/apitest</code></p>
-        <input type="text" name="_id" placeholder="_id *" required=""><br>
+        <input type="text" name="_id" placeholder="ID *" required=""><br>
         <input type="text" name="issue_title" placeholder="Title"><br>
         <textarea type="text" name="issue_text" placeholder="Text"></textarea><br>
         <input type="text" name="created_by" placeholder="Created by"><br>
@@ -89,7 +89,7 @@
       <form id="deleteForm" class="border">
         <h3>Delete issue on <i>apitest</i>:</h3>
         <p><code>DELETE /api/issues/apitest</code></p>
-        <input type="text" name="_id" placeholder="_id" required=""><br><br>
+        <input type="text" name="_id" placeholder="ID" required=""><br><br>
         <p class="status">Status: <span id="deleteStatus"></span></p>
         <input type="submit" value="Delete Issue">
       </form>
@@ -105,11 +105,7 @@
       </p>
     </footer>
     
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
-            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
-            crossorigin="anonymous"></script>
-    
     <script src="script-index.js"></script>
-  
+    
   </body>
 </html>

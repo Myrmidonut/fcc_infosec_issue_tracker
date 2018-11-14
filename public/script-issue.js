@@ -1,80 +1,102 @@
-$(function() {
-  var currentProject = window.location.pathname.replace(/\//g, "");;
-  var url = "/api/issues/"+currentProject;
+const currentProject = window.location.pathname.replace(/\//g, "");;
+const projectTitle = document.getElementById("projectTitle");
+const url = `/api/issues/${currentProject}`;
 
-  $('#projectTitle').text('All issues for: '+currentProject)
-  $.ajax({
-    type: "GET",
-    url: url,
-    success: function(data)
-    {
-      var issues= [];
+projectTitle.textContent = `All issues for: ${currentProject}`
 
-      data.forEach(function(ele) {
-        var openstatus;
-        (ele.open) ? openstatus = 'open' : openstatus = 'closed';
+getIssues();
 
-        var single = [
-          '<div class="issue '+openstatus+'">',
-          '<h3>'+ele.issue_title+' -  ('+openstatus+')</h3>',
-          '<br>',
-          '<p><b>Text: </b>'+ele.issue_text+'</p>',
-          '<p><b>Status: </b>'+ele.status_text+'</p>',
-          '<br>',
-          '<p class="id"><b>id: </b>'+ele._id+'</p>',
-          '<p class="id"><b>Created by:</b> '+ele.created_by+'<br><b>Assigned to:</b> '+ele.assigned_to,
-          '<p class="id"><b>Created on:</b> '+ele.created_on+'<br><b>Last updated:</b> '+ele.updated_on,
-          '<br><a href="#" class="closeIssue" id="'+ele._id+'">Close?</a><br><a href="#" class="deleteIssue" id="'+ele._id+'">Delete?</a>',
-          '</div>',
-          '<hr>'
-        ];
+function getIssues() {
+  fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    let issues= [];
+    
+    data.forEach(e => {
+      let openstatus;
 
-        issues.push(single.join(''));
-      });
+      (e.open) ? openstatus = "open" : openstatus = "closed";
 
-      $('#issueDisplay').html(issues.join(''));
-    }
-  });
-  
-  
-  
-  
-  
-  $('#newIssue').submit(function(e){
-    e.preventDefault();
-    $(this).attr('action', "/api/issues/" + currentProject);
-    $.ajax({
-      type: "POST",
-      url: url,
-      data: $(this).serialize(),
-      success: function(data) { window.location.reload(true); }
+      const single = [
+        '<div class="issue ' + openstatus + '">',
+        '<h3>' + e.issue_title + ' -  (' + openstatus + ')</h3>',
+        '<br>',
+        '<p><b>Text: </b>' + e.issue_text + '</p>',
+        '<p><b>Status: </b>' + e.status_text + '</p>',
+        '<br>',
+        '<p class="id"><b>id: </b>' + e._id + '</p>',
+        '<p class="id"><b>Created by:</b> ' + e.created_by + '<br><b>Assigned to:</b> ' + e.assigned_to,
+        '<p class="id"><b>Created on:</b> ' + e.created_on + '<br><b>Last updated:</b> ' + e.updated_on,
+        '<button class="closeIssue" id="' + e._id + '">Close</button>',
+        '<button class="deleteIssue" id="' + e._id + '">Delete</button>',
+        '</div>'
+      ];
+
+      issues.push(single.join(""));
     });
-  });
 
-  $('#issueDisplay').on('click','.closeIssue', function(e) {
-    var url = "/api/issues/"+currentProject;
-    $.ajax({
-      type: "PUT",
-      url: url,
-      data: {_id: $(this).attr('id'), open: false},
-      success: function(data) { alert(data); window.location.reload(true); }
-    });
-    e.preventDefault();
-  });
+    const issueDisplay = document.getElementById("issueDisplay");
 
-  $('#issueDisplay').on('click','.deleteIssue', function(e) {
-    var url = "/api/issues/"+currentProject;
-    $.ajax({
-      type: "DELETE",
-      url: url,
-      data: {_id: $(this).attr('id')},
-      success: function(data) { alert(data); window.location.reload(true); }
-    });
-    e.preventDefault();
-  });
+    issueDisplay.innerHTML = issues.join("");
+  })
+  .then(() => {
+    closeIssue();
+    deleteIssue();
+  })
+}
+
+const newIssue = document.getElementById("newIssue");
+
+newIssue.addEventListener("submit", e => {
+  e.preventDefault();
   
-  
-  
-  
-  
-});
+  fetch(url, {
+    method: "post",
+    body: new URLSearchParams(new FormData(newIssue))
+  })
+  .then(response => response.json())
+  .then(data => {
+    newIssue.reset();
+    getIssues();
+  })
+})
+
+function closeIssue() {
+  const closeIssue = document.querySelectorAll(".closeIssue")
+
+  closeIssue.forEach(e => {
+    e.addEventListener("click", f => {
+      f.preventDefault();
+      
+      fetch(url, {
+        method: "put",
+        body: JSON.stringify({_id: e.id, open: false}),
+        headers: {"Content-type": "application/json"}
+      })
+      .then(response => response.text())
+      .then(data => {
+        getIssues();
+      })
+    })
+  })
+}
+
+function deleteIssue() {
+  const deleteIssue = document.querySelectorAll(".deleteIssue")
+
+  deleteIssue.forEach(e => {
+    e.addEventListener("click", f => {
+      f.preventDefault();
+      
+      fetch(url, {
+        method: "delete",
+        body: JSON.stringify({_id: e.id}),
+        headers: {"Content-type": "application/json"}
+      })
+      .then(response => response.text())
+      .then(data => {
+        getIssues();
+      })
+    })
+  })
+}
