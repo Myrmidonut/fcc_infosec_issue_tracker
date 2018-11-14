@@ -60,7 +60,7 @@ input[type=checkbox] {
   width: 20px;
 }
 
-form {
+form, .issue {
   box-sizing: border-box;
   padding: 15px;
   background-color: #87D37C;
@@ -71,7 +71,7 @@ form {
   margin-bottom: 20px;
 }
 
-input, textarea {
+input, textarea, button {
   box-sizing: border-box;
   margin-bottom: 10px;
   padding: 5px;
@@ -82,7 +82,7 @@ input, textarea {
   font-family: 'Roboto', sans-serif;
 }
 
-input[type=submit] {
+input[type=submit], button {
   font-size: 16px;
   border-radius: 3px;
   background-color: #E4F1FE;
@@ -91,11 +91,33 @@ input[type=submit] {
   cursor: pointer;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, button:hover {
   background-color: #FFFEC4;
 }
 
 .status {
-  margin-left: 50px;
-  text-align: left;
+  text-align: center;
+}
+
+.issue {
+  border: 1px solid black;
+  margin-bottom: 20px;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding-bottom: 0;
+}
+
+.issue h3 {
+  padding: 10px;
+  display: inline-block;
+  border: 1px;
+  background: rgba(0,0,0,0.1);
+}
+
+#jsonResult {
+  height: 70px;
+}
+
+#newIssue textarea {
+  height: 100px;
 }

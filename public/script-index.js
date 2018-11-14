@@ -14,7 +14,7 @@ submitForm.addEventListener("submit", e => {
   e.preventDefault();
   
   fetch(url, {
-    method: 'post',
+    method: "post",
     body: new URLSearchParams(new FormData(submitForm))
   })
   .then(response => response.text())
@@ -37,7 +37,7 @@ updateForm.addEventListener("submit", e => {
   e.preventDefault();
   
   fetch(url, {
-    method: 'put',
+    method: "put",
     body: new URLSearchParams(new FormData(updateForm))
   })
   .then(response => response.text())
@@ -60,7 +60,7 @@ deleteForm.addEventListener("submit", e => {
   e.preventDefault();
   
   fetch(url, {
-    method: 'delete',
+    method: "delete",
     body: new URLSearchParams(new FormData(deleteForm))
   })
   .then(response => response.text())
