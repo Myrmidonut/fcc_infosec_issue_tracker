@@ -16,7 +16,9 @@ const apitestUrl = "/api/issues/apitest";
 openProjectButton.addEventListener("click", e => {
   e.preventDefault();
   
-  window.location.pathname = `/${openProjectField.value}`;
+  if (openProjectField.value !== "") {
+    window.location.pathname = `/${openProjectField.value}`;
+  }
 })
 
 openAllProjectsButton.addEventListener("click", e => {
@@ -69,7 +71,8 @@ submitIssueTest.addEventListener("submit", e => {
   .then(response => response.text())
   .then(data => {
     if (data === "missing inputs") {
-    submitStatus.textContent = "Failure!"
+      jsonResult.textContent = data;
+      submitStatus.textContent = "Failure!"
     } else {
       jsonResult.textContent = data;
       submitStatus.textContent = "Success!"
@@ -92,6 +95,7 @@ updateIssueTest.addEventListener("submit", e => {
   .then(response => response.text())
   .then(data => {
     if (data === "no updated field sent" || data.includes("could not update ")) {
+      jsonResult.textContent = data;
       updateStatus.textContent = "Failure!"
     } else {
       jsonResult.textContent = data;
@@ -114,7 +118,9 @@ deleteIssueTest.addEventListener("submit", e => {
   })
   .then(response => response.text())
   .then(data => {
-    if (data.includes("could not delete ") || data === "_id error") {
+    console.log(data)
+    if (data.includes("could not delete ") || data === "_id error" || "not found") {
+      jsonResult.textContent = data;
       deleteStatus.textContent = "Failure!"
     } else {
       jsonResult.textContent = data;
