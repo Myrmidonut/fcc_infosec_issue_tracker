@@ -51,13 +51,13 @@
       <hr>
       
       <h2>API Test:</h2>
-      <form class="border" method="get" action="/apitest">
+      <form class="testForm" method="get" action="/apitest">
         <h3>Show all <i>apitest</i> issues:</h3>
         <p><code>GET /api/issues/apitest</code></p>
         <input type="submit" value="Show all issues">
       </form>
       
-      <form id="submitIssueTest" class="border">
+      <form id="submitIssueTest" class="testForm">
         <h3>Submit issue on <i>apitest</i>:</h3>
         <p><code>POST /api/issues/apitest</code></p>
         <input type="text" name="issue_title" placeholder="Title *" required=""><br>
@@ -70,7 +70,7 @@
         <input type="submit" value="Submit issue">
       </form>
       
-      <form id="updateIssueTest" class="border">
+      <form id="updateIssueTest" class="testForm">
         <h3>Update issue on <i>apitest</i>:</h3>
         <p><code>PUT /api/issues/apitest</code></p>
         <input type="text" name="_id" placeholder="ID *" required=""><br>
@@ -88,7 +88,7 @@
         <input type="submit" value="Update issue">
       </form>
       
-      <form id="deleteIssueTest" class="border">
+      <form id="deleteIssueTest" class="testForm">
         <h3>Delete issue on <i>apitest</i>:</h3>
         <p><code>DELETE /api/issues/apitest</code></p>
         <input type="text" name="_id" placeholder="ID" required=""><br><br>

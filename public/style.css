@@ -167,5 +167,10 @@ input[type=submit]:hover, button:hover {
 }
 
 hr {
-  max-width: 1370px;
+  max-width: 1470px;
+}
+
+.testForm {
+  margin-left: 1%;
+    margin-right: 1%;
 }
