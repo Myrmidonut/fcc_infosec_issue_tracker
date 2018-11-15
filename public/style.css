@@ -117,6 +117,8 @@ input[type=submit]:hover, button:hover {
 
 #jsonResult {
   height: 70px;
+  border: 1px solid black;
+  border-radius: 3px;
 }
 
 #newIssue textarea {

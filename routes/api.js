@@ -114,14 +114,16 @@ module.exports = app => {
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
         const collection = db.collection("issues");
         
-        if (!req.body._id) {
+        if (!req.body._id || req.body._id.length !== 24) {
           res.send("_id error");
         } else {
-          collection.remove({project: project, _id: ObjectId(req.body._id)}, (err, result) => {
+          collection.findOneAndDelete({project: project, _id: ObjectId(req.body._id)}, (err, result) => {
             if (err) {
               res.send("could not delete " + req.body._id);
-            } else {
+            } else if (result.value !== null) {
               res.send("deleted " + req.body._id);
+            } else {
+              res.send(req.body._id + " not found")
             }
           })
         }
