@@ -32,7 +32,7 @@
       
       <h3>Example usage:</h3>
       <code>GET /api/issues/{project}</code><br>
-      <code>PUT /api/issues/{project}?open=true&amp;assigned_to=Joe</code><br>
+      <code>PUT /api/issues/{project}?open=true&amp;assigned_to=Joe</code>
       
       <h3>Example return:</h3>
       <code>[{"_id": "5871dda29faedc3491ff93bb", "issue_title":"Fix error in posting data", "issue_text":"When we post data it has an error.", "created_on":"2017-01-08T06:35:14.240Z", "updated_on":"2017-01-08T06:35:14.240Z", "created_by":"Joe", "assigned_to":"Joe", "open":true, "status_text":"In QA"}, ...]</code><br><br>
@@ -40,22 +40,25 @@
       <hr>
       
       <h2>API:</h2>
-      <h3><a href="/api/issues">Show all projects</a></h3>
-      <p>
-        <form id="projectForm" class="border">
-          <h3>Open any project</h3>
-          <p><code>GET /api/issues/:project</code></p>
-          <input type="text" name="project" placeholder="Project" required=""><br><br>
-          <input type="submit" value="Open Project">
-        </form>
-      </p>
+      <form class="border">
+        <h3>Open a project</h3>
+        <p><code>GET /api/issues/:project</code></p>
+        <input id="openProjectField" type="text" placeholder="Project" required="">
+        <button id="openProjectButton">Open Project</button>
+        <button id="openAllProjectsButton">Show all projects</button>
+        <ol id="projectsList"></ol>
+      </form>
       
       <hr>
       
       <h2>API Test:</h2>
-      <h3><a href="/apitest">Show <em>/apitest/</em> issues page</a></h3>
+      <form class="border" method="get" action="/apitest">
+        <h3>Show all <i>apitest</i> issues:</h3>
+        <p><code>GET /api/issues/apitest</code></p>
+        <input type="submit" value="Show all issues">
+      </form>
       
-      <form id="submitForm" class="border">
+      <form id="submitIssueTest" class="border">
         <h3>Submit issue on <i>apitest</i>:</h3>
         <p><code>POST /api/issues/apitest</code></p>
         <input type="text" name="issue_title" placeholder="Title *" required=""><br>
@@ -65,10 +68,10 @@
         <input type="text" name="status_text" placeholder="Status text">
         <p>* Required Fields</p>
         <p class="status">Status: <span id="submitStatus"></span></p>
-        <input type="submit" value="Submit Issue">
+        <input type="submit" value="Submit issue">
       </form>
       
-      <form id="updateForm" class="border">
+      <form id="updateIssueTest" class="border">
         <h3>Update issue on <i>apitest</i>:</h3>
         <p><code>PUT /api/issues/apitest</code></p>
         <input type="text" name="_id" placeholder="ID *" required=""><br>
@@ -83,15 +86,15 @@
         </label>
         <p>* Required Field</p>
         <p class="status">Status: <span id="updateStatus"></span></p>
-        <input type="submit" value="Update Issue">
+        <input type="submit" value="Update issue">
       </form>
       
-      <form id="deleteForm" class="border">
+      <form id="deleteIssueTest" class="border">
         <h3>Delete issue on <i>apitest</i>:</h3>
         <p><code>DELETE /api/issues/apitest</code></p>
         <input type="text" name="_id" placeholder="ID" required=""><br><br>
         <p class="status">Status: <span id="deleteStatus"></span></p>
-        <input type="submit" value="Delete Issue">
+        <input type="submit" value="Delete issue">
       </form>
       
       <h3>API response:</h3>
