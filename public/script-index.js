@@ -24,16 +24,16 @@ openProjectButton.addEventListener("click", e => {
 openAllProjectsButton.addEventListener("click", e => {
   e.preventDefault();
   
+  openAllProjectsButton.textContent = "Loading..."
+  
   const url = "/api/issues";
   let projects;
   
   if (projectsList.innerHTML === "") {
-    openAllProjectsButton.textContent = "Hide all projects";
-    
     fetch(url)
     .then(response => response.json())
     .then(data => {
-      projectsList.innerHTML = "<br>";
+      projectsList.innerHTML = "<h3>Projects:</h3>";
       data.forEach(e => {
         projectsList.innerHTML += `<li class="projectLink" id="${e}">${e}</li>`
       })
