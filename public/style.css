@@ -69,6 +69,7 @@ form, .issue {
   max-width: 340px;
   border-radius: 5px;
   margin-bottom: 20px;
+  vertical-align: top;
 }
 
 input, textarea, button {
@@ -120,4 +121,33 @@ input[type=submit]:hover, button:hover {
 
 #newIssue textarea {
   height: 100px;
+}
+
+.issue hr {
+  border: 1px solid white;
+}
+
+#projectsList {
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.projectLink {
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  background-color: white;
+}
+
+.projectLink:hover {
+  border: 1px solid black;
 }

@@ -1,21 +1,70 @@
-const submitForm = document.getElementById("submitForm");
-const updateForm = document.getElementById("updateForm");
-const deleteForm = document.getElementById("deleteForm");
+const submitIssueTest = document.getElementById("submitIssueTest");
+const updateIssueTest = document.getElementById("updateIssueTest");
+const deleteIssueTest = document.getElementById("deleteIssueTest");
 const jsonResult = document.getElementById("jsonResult");
 const submitStatus = document.getElementById("submitStatus");
 const updateStatus = document.getElementById("updateStatus");
 const deleteStatus = document.getElementById("deleteStatus");
 
-const url = "/api/issues/apitest";
+const openProjectField = document.getElementById("openProjectField");
+const openProjectButton = document.getElementById("openProjectButton");
+const openAllProjectsButton = document.getElementById("openAllProjectsButton");
+const projectsList = document.getElementById("projectsList");
 
-submitForm.addEventListener("submit", e => {
+const apitestUrl = "/api/issues/apitest";
+
+openProjectButton.addEventListener("click", e => {
+  e.preventDefault();
+  
+  window.location.pathname = `/${openProjectField.value}`;
+})
+
+openAllProjectsButton.addEventListener("click", e => {
+  e.preventDefault();
+  
+  const url = "/api/issues";
+  let projects;
+  
+  if (projectsList.innerHTML === "") {
+    openAllProjectsButton.textContent = "Hide all projects";
+    
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      projectsList.innerHTML = "<br>";
+      data.forEach(e => {
+        projectsList.innerHTML += `<li class="projectLink" id="${e}">${e}</li>`
+      })
+      
+      openAllProjectsButton.textContent = "Hide all projects";
+      projects = projectsList.innerHMTL;
+    })
+    .then(() => {
+      const projectLink = document.querySelectorAll(".projectLink");
+      
+      projectLink.forEach(e => {
+        e.addEventListener("click", () => {
+          window.location.pathname = `/${e.id}`;
+        })
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  } else {
+    openAllProjectsButton.textContent = "Show all projects";
+    projectsList.innerHTML = "";
+  }
+})
+
+submitIssueTest.addEventListener("submit", e => {
   submitStatus.textContent = "";
   
   e.preventDefault();
   
-  fetch(url, {
+  fetch(apitestUrl, {
     method: "post",
-    body: new URLSearchParams(new FormData(submitForm))
+    body: new URLSearchParams(new FormData(submitIssueTest))
   })
   .then(response => response.text())
   .then(data => {
@@ -31,14 +80,14 @@ submitForm.addEventListener("submit", e => {
   })
 })
 
-updateForm.addEventListener("submit", e => {
+updateIssueTest.addEventListener("submit", e => {
   updateStatus.textContent = "";
   
   e.preventDefault();
   
-  fetch(url, {
+  fetch(apitestUrl, {
     method: "put",
-    body: new URLSearchParams(new FormData(updateForm))
+    body: new URLSearchParams(new FormData(updateIssueTest))
   })
   .then(response => response.text())
   .then(data => {
@@ -54,14 +103,14 @@ updateForm.addEventListener("submit", e => {
   })
 })
 
-deleteForm.addEventListener("submit", e => {
+deleteIssueTest.addEventListener("submit", e => {
   deleteStatus.textContent = "";
   
   e.preventDefault();
   
-  fetch(url, {
+  fetch(apitestUrl, {
     method: "delete",
-    body: new URLSearchParams(new FormData(deleteForm))
+    body: new URLSearchParams(new FormData(deleteIssueTest))
   })
   .then(response => response.text())
   .then(data => {

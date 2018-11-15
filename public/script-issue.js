@@ -1,10 +1,17 @@
-const currentProject = window.location.pathname.replace(/\//g, "");;
+const currentProject = window.location.pathname.replace(/\//g, "");
 const projectTitle = document.getElementById("projectTitle");
+const mainPageButton = document.getElementById("mainPage")
 const url = `/api/issues/${currentProject}`;
 
 projectTitle.textContent = `All issues for: ${currentProject}`
 
 getIssues();
+
+mainPageButton.addEventListener("click", e => {
+  e.preventDefault();
+  
+  window.location.pathname = "/";
+})
 
 function getIssues() {
   fetch(url)
@@ -19,14 +26,14 @@ function getIssues() {
 
       const single = [
         '<div class="issue ' + openstatus + '">',
-        '<h3>' + e.issue_title + ' -  (' + openstatus + ')</h3>',
+        '<h3>' + e.issue_title + ' - (' + openstatus + ')</h3>',
         '<br>',
-        '<p><b>Text: </b>' + e.issue_text + '</p>',
-        '<p><b>Status: </b>' + e.status_text + '</p>',
-        '<br>',
-        '<p class="id"><b>id: </b>' + e._id + '</p>',
-        '<p class="id"><b>Created by:</b> ' + e.created_by + '<br><b>Assigned to:</b> ' + e.assigned_to,
-        '<p class="id"><b>Created on:</b> ' + e.created_on + '<br><b>Last updated:</b> ' + e.updated_on,
+        '<p><strong>Text: </strong>' + e.issue_text + '</p>',
+        '<p><strong>Status: </strong>' + e.status_text + '</p>',
+        '<hr>',
+        '<p class="id"><strong>ID: </strong>' + e._id + '</p>',
+        '<p class="id"><strong>Created by: </strong>' + e.created_by + '<br><strong>Assigned to: </strong>' + e.assigned_to,
+        '<p class="id"><strong>Created on: </strong>' + e.created_on + '<br><strong>Last updated: </strong>' + e.updated_on + '</p>',
         '<button class="closeIssue" id="' + e._id + '">Close</button>',
         '<button class="deleteIssue" id="' + e._id + '">Delete</button>',
         '</div>'
