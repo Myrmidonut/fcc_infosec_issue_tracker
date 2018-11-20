@@ -12,7 +12,6 @@ MongoClient.connect(CONNECTION_STRING, (err, db) => {
 });
 
 module.exports = app => {
-  
   app.route("/api/issues")
     .get((req, res) => {
       MongoClient.connect(CONNECTION_STRING, (err, db) => {
